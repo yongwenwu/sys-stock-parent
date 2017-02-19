@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<project name="proj Backup" default="backup" basedir=".">
+	
+	<target name="init">
+		<property name="back.dir" value="Z:/"/>
+		<tstamp>
+		   <format property="currTime" pattern="yyyyMMddHH"/>
+		</tstamp>
+  </target>
+	<!-- 系统备份 -->
+	<target name="backup" depends="init">
+		<jar jarfile='D:\项目管理\项目版本管理\库存管理系统项目\sys-stock-parent_backup${currTime}(V1.0.3)_wyw.jar' encoding='UTF-8'>
+			<!--<fileset dir='.' includes='core/**,redis/**,tomcat/**,src/**,webroot/**' excludes='*.scc,*.svn'/>--> 
+			<fileset dir='D:\workspace4.5\sys-stock-parent'  excludes='*.scc,*.svn'/> 
+		</jar>
+  </target>
+</project>

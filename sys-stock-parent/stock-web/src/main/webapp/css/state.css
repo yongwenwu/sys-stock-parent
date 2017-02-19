@@ -1,0 +1,70 @@
+@font-face {
+	font-family:"方正品尚黑简体";
+	src: url('font/方正品尚黑简体.TTF');
+}
+.cont{
+	width: 100%;
+}
+.cont li{
+	width: 234px;
+	height: 234px;
+	border-radius: 8px;
+	float: left;
+	margin-left: 38px;
+	margin-bottom: 30px;
+}
+.shoppic{
+	width: 121px;
+	height: 121px;
+	margin: 30px auto;
+}
+.shoppic img{
+	display: block;
+	width: 100%;
+}
+.cont li p{
+	text-align: center;
+	color: #5096b6;
+	font-size: 24px;
+	font-weight: bold;
+	font-family:'方正品尚黑简体 ';
+}
+@media only screen and (min-width: 800px) and (max-width:1400px) {
+	@font-face {
+	font-family:"方正品尚黑简体";
+	src: url('font/方正品尚黑简体.TTF');
+}
+.wrap{
+	width: 980px;
+	margin: 20px auto;
+}
+.cont{
+	width: 100%;
+}
+.cont li{
+	width: 165px;
+	height: 165px;
+	border-radius: 8px;
+	float: left;
+	margin-left: 30px;
+	margin-bottom: 30px;
+}
+.shoppic{
+	width: 87px;
+	height: 87px;
+	margin: 0 auto;
+	margin-top: 30px;
+	margin-bottom: 14px;
+}
+.shoppic img{
+	display: block;
+	width: 100%;
+}
+.cont li p{
+	text-align: center;
+	color: #5096b6;
+	font-size: 16px;
+	font-weight: bold;
+	font-family:'方正品尚黑简体 ';
+}
+}
