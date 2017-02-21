@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.stock.security.dao.UserDao">
+	<resultMap id="UserView" type="com.stock.security.user.model.UserView" >
+		 <id property="id" column="id" />
+		<result property="loginName" column="login_Name" />
+		<result property="password" column="password" />
+		<result property="userType" column="user_type" />
+		<result property="employeeNumber" column="employee_Number" />
+		<result property="nickname" column="nickname" />
+		<result property="trueName" column="true_name" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="deptId" column="dept_id" />
+		<result property="position" column="position" />
+		<result property="positionDesc" column="position_desc" />
+		<result property="mobilePhone" column="mobile_phone" />
+		<result property="officeTelephone" column="office_telephone" />
+		<result property="homeTelephone" column="home_telephone" />
+		<result property="email" column="email" />
+		<result property="headImgUrl" column="head_img_url" />
+		<result property="remarks" column="remarks" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="createUser" column="create_user" />
+		<result property="updateTime" column="update_time" />
+		<result property="updateUser" column="update_user" />
+	</resultMap>
+
+
+
+	<!-- 新建信息 -->
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.stock.security.user.model.User">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			<![CDATA[SELECT LAST_INSERT_ID() as id ]]>
+		</selectKey>
+		INSERT INTO t_user
+		(
+			login_name, 
+			PASSWORD, 
+			user_type, 
+			employee_number, 
+			nickname, 
+			true_name, 
+			sex, 
+			birthday, 
+			dept_id, 
+			POSITION, 
+			position_desc, 
+			mobile_phone, 
+			office_telephone, 
+			home_telephone, 
+			email, 
+			head_img_url, 
+			remarks, 
+			status, 
+			create_time, 
+			create_user, 
+			update_time, 
+			update_user
+		)
+		VALUES
+		(
+			#{loginName},
+			#{password},
+			#{userType},
+			#{employeeNumber},
+			#{nickname},
+			#{trueName},
+			#{sex},
+			#{birthday},
+			#{deptId},
+			#{position},
+			#{positionDesc},
+			#{mobilePhone},
+			#{officeTelephone},
+			#{homeTelephone},
+			#{email},
+			#{remarks},
+			#{status},
+			#{createTime},
+			#{createUser},
+			#{updateTime},
+			#{updateUser}
+		)
+	</insert>
+	
+	<!-- 根据id更新数据 -->
+	<update id="updateUserById" parameterType="com.stock.security.user.model.User" >
+		UPDATE t_user 
+			<set>
+				<if test="loginName != null" > login_name = #{loginName}, </if>
+				<if test="password != null" > password = #{password}, </if>
+				<if test="userType != null" > user_type = #{userType}, </if>
+				<if test="employeeNumber != null" > employee_number = #{employeeNumber}, </if>
+				<if test="nickname != null" > nickname = #{nickname}, </if>
+				<if test="trueName != null" > true_name = #{trueName}, </if>
+				<if test="sex!= null" >  sex= #{sex}, </if>
+				<if test="birthday != null" >  birthday = #{birthday}, </if>
+				<if test="deptId != null" > dept_id  = #{deptId}, </if>
+				<if test="position != null" > position = #{position}, </if>
+				<if test="positionDesc != null" > position_desc = #{positionDesc}, </if>
+				<if test="mobilePhone != null" > mobile_phone = #{mobilePhone}, </if>
+				<if test="officeTelephone != null" > office_telephone = #{officePhone}, </if>
+				<if test="homeTelephone != null" > home_telephone  = #{homeTelephone}, </if>
+				<if test="email != null" > email = #{email}, </if>
+				<if test="remarks != null" > remarks = #{remarks}, </if>
+				<if test="status != null" > status = #{status}, </if>
+				<if test="updateTime != null" > update_time = #{updateTime}, </if>
+				<if test="updateUser != null" > update_user = #{updateUser}, </if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+	
+	<!-- 分页查询结果 -->
+	<select id="queryUserPageByCondition" parameterType="com.stock.security.user.model.UserCondition" resultMap="UserView" >
+		select 
+			id,
+			login_name, 
+			password, 
+			user_type, 
+			employee_number, 
+			nickname, 
+			true_name, 
+			sex, 
+			birthday, 
+			dept_id, 
+			POSITION, 
+			position_desc, 
+			mobile_phone, 
+			office_telephone, 
+			home_telephone, 
+			email, 
+			head_img_url, 
+			remarks, 
+			status, 
+			create_time,  <!-- date_format(create_time,'%Y-%c-%d %h:%i:%s') createTimeStr, -->
+			create_user, 
+			update_time, 
+			update_user
+
+		from 
+			t_user
+		<where>
+			delete_status != 3 <!-- 非删除状态 -->
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="loginName != null and loginName !='' " > 
+				<![CDATA[and login_name like CONCAT(CONCAT('%', #{loginName}),'%')]]>
+			</if>
+			<if test="userType != null " > 
+				and user_type = #{userType}
+			</if>
+			<if test="nickname != null and nickname !='' " > 
+				<![CDATA[and nickname like CONCAT(CONCAT('%', #{nickname}),'%')]]>
+			</if>
+			<if test="trueName != null and trueName !='' " > 
+				<![CDATA[and true_name like CONCAT(CONCAT('%', #{trueName}),'%')]]>
+			</if>
+			<if test="sex != null " > 
+				and sex = #{sex}
+			</if>
+			<if test="birthdayMin != null and birthdayMin !='' " > 
+				<![CDATA[and unix_timestamp(birthday) >= unix_timestamp(#{birthdayMin})]]>
+			</if>
+			<if test="birthdayMax != null and birthdayMax !='' " > 
+				<![CDATA[and unix_timestamp(birthday) <= unix_timestamp(#{birthdayMax})]]>
+			</if>
+			<if test="deptId != null " > 
+				and dept_id = #{deptId}
+			</if>
+			<if test="position != null and position != '' " > 
+				and position = #{position}
+			</if>
+			<if test="positionDesc != null and positionDesc != '' " > 
+				and position_desc = #{positionDesc}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''  " > 
+				and mobile_phone = #{mobilePhone}
+			</if>
+			<if test="officeTelephone != null and officeTelephone != '' " > 
+				and office_telephone = #{officeTelephone}
+			</if>
+			<if test="homeTelephone != null and homeTelephone != '' " > 
+				and home_telephone = #{homeTelephone}
+			</if>
+			<if test="email != null and email != '' " > 
+				and email = #{email}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+			
+			<if test="updateTimeMin != null and updateTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(update_time) >= unix_timestamp(#{updateTimeMin})]]>
+			</if>
+			<if test="updateTimeMax != null and updateTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(update_time) <= unix_timestamp(#{updateTimeMax})]]>
+			</if>
+		</where>
+		<if test="dataGridModel != null">
+			<if test="dataGridModel.sort != null and dataGridModel.sort !=''">
+				order by ${dataGridModel.sort}
+				<if test="dataGridModel.order != null and dataGridModel.order !=''">
+					${dataGridModel.order}
+				</if>
+			</if>
+			
+			<if test="dataGridModel.offset != null and dataGridModel.offset >=0 and dataGridModel.limit != null and dataGridModel.limit >= 0">
+				limit #{dataGridModel.offset}, #{dataGridModel.limit}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 分页查询总数 -->
+	<select id="queryUserPageCountByCondition" parameterType="com.stock.security.user.model.UserCondition" resultType="long" >
+		select 
+			count(1) 
+		from 
+			t_User
+		
+		<where>
+			delete_status != 3 <!-- 非删除状态 -->
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="loginName != null and loginName !='' " > 
+				<![CDATA[and login_name like CONCAT(CONCAT('%', #{loginName}),'%')]]>
+			</if>
+			<if test="userType != null " > 
+				and user_type = #{userType}
+			</if>
+			<if test="nickname != null and nickname !='' " > 
+				<![CDATA[and nickname like CONCAT(CONCAT('%', #{nickname}),'%')]]>
+			</if>
+			<if test="trueName != null and trueName !='' " > 
+				<![CDATA[and true_name like CONCAT(CONCAT('%', #{trueName}),'%')]]>
+			</if>
+			<if test="sex != null " > 
+				and sex = #{sex}
+			</if>
+			<if test="birthdayMin != null and birthdayMin !='' " > 
+				<![CDATA[and unix_timestamp(birthday) >= unix_timestamp(#{birthdayMin})]]>
+			</if>
+			<if test="birthdayMax != null and birthdayMax !='' " > 
+				<![CDATA[and unix_timestamp(birthday) <= unix_timestamp(#{birthdayMax})]]>
+			</if>
+			<if test="deptId != null " > 
+				and dept_id = #{deptId}
+			</if>
+			<if test="position != null and position != '' " > 
+				and position = #{position}
+			</if>
+			<if test="positionDesc != null and positionDesc != '' " > 
+				and position_desc = #{positionDesc}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''  " > 
+				and mobile_phone = #{mobilePhone}
+			</if>
+			<if test="officeTelephone != null and officeTelephone != '' " > 
+				and office_telephone = #{officeTelephone}
+			</if>
+			<if test="homeTelephone != null and homeTelephone != '' " > 
+				and home_telephone = #{homeTelephone}
+			</if>
+			<if test="email != null and email != '' " > 
+				and email = #{email}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+			
+			<if test="updateTimeMin != null and updateTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(update_time) >= unix_timestamp(#{updateTimeMin})]]>
+			</if>
+			<if test="updateTimeMax != null and updateTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(update_time) <= unix_timestamp(#{updateTimeMax})]]>
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 据条件查询结果 -->
+	<select id="queryUserListByCondition" parameterType="com.stock.security.user.model.UserCondition" resultMap="UserView" >
+		select 
+			id,
+			login_name, 
+			password, 
+			user_type, 
+			employee_number, 
+			nickname, 
+			true_name, 
+			sex, 
+			birthday, 
+			dept_id, 
+			POSITION, 
+			position_desc, 
+			mobile_phone, 
+			office_telephone, 
+			home_telephone, 
+			email, 
+			head_img_url, 
+			remarks, 
+			status, 
+			create_time,  <!-- date_format(create_time,'%Y-%c-%d %h:%i:%s') createTimeStr, -->
+			create_user, 
+			update_time, 
+			update_user
+
+		from 
+			t_user
+		<where>
+			delete_status != 3 <!-- 非删除状态 -->
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="loginName != null and loginName !='' " > 
+				<![CDATA[and login_name like CONCAT(CONCAT('%', #{loginName}),'%')]]>
+			</if>
+			<if test="userType != null " > 
+				and user_type = #{userType}
+			</if>
+			<if test="nickname != null and nickname !='' " > 
+				<![CDATA[and nickname like CONCAT(CONCAT('%', #{nickname}),'%')]]>
+			</if>
+			<if test="trueName != null and trueName !='' " > 
+				<![CDATA[and true_name like CONCAT(CONCAT('%', #{trueName}),'%')]]>
+			</if>
+			<if test="sex != null " > 
+				and sex = #{sex}
+			</if>
+			<if test="birthdayMin != null and birthdayMin !='' " > 
+				<![CDATA[and unix_timestamp(birthday) >= unix_timestamp(#{birthdayMin})]]>
+			</if>
+			<if test="birthdayMax != null and birthdayMax !='' " > 
+				<![CDATA[and unix_timestamp(birthday) <= unix_timestamp(#{birthdayMax})]]>
+			</if>
+			<if test="deptId != null " > 
+				and dept_id = #{deptId}
+			</if>
+			<if test="position != null and position != '' " > 
+				and position = #{position}
+			</if>
+			<if test="positionDesc != null and positionDesc != '' " > 
+				and position_desc = #{positionDesc}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''  " > 
+				and mobile_phone = #{mobilePhone}
+			</if>
+			<if test="officeTelephone != null and officeTelephone != '' " > 
+				and office_telephone = #{officeTelephone}
+			</if>
+			<if test="homeTelephone != null and homeTelephone != '' " > 
+				and home_telephone = #{homeTelephone}
+			</if>
+			<if test="email != null and email != '' " > 
+				and email = #{email}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+			
+			<if test="updateTimeMin != null and updateTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(update_time) >= unix_timestamp(#{updateTimeMin})]]>
+			</if>
+			<if test="updateTimeMax != null and updateTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(update_time) <= unix_timestamp(#{updateTimeMax})]]>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据条件查询总数 -->
+	<select id="queryUserCountByCondition" parameterType="com.stock.security.user.model.UserCondition" resultType="long" >
+		select 
+			count(1) 
+		from 
+			t_User
+		
+		<where>
+			delete_status != 3 <!-- 非删除状态 -->
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="loginName != null and loginName !='' " > 
+				<![CDATA[and login_name like CONCAT(CONCAT('%', #{loginName}),'%')]]>
+			</if>
+			<if test="userType != null " > 
+				and user_type = #{userType}
+			</if>
+			<if test="nickname != null and nickname !='' " > 
+				<![CDATA[and nickname like CONCAT(CONCAT('%', #{nickname}),'%')]]>
+			</if>
+			<if test="trueName != null and trueName !='' " > 
+				<![CDATA[and true_name like CONCAT(CONCAT('%', #{trueName}),'%')]]>
+			</if>
+			<if test="sex != null " > 
+				and sex = #{sex}
+			</if>
+			<if test="birthdayMin != null and birthdayMin !='' " > 
+				<![CDATA[and unix_timestamp(birthday) >= unix_timestamp(#{birthdayMin})]]>
+			</if>
+			<if test="birthdayMax != null and birthdayMax !='' " > 
+				<![CDATA[and unix_timestamp(birthday) <= unix_timestamp(#{birthdayMax})]]>
+			</if>
+			<if test="deptId != null " > 
+				and dept_id = #{deptId}
+			</if>
+			<if test="position != null and position != '' " > 
+				and position = #{position}
+			</if>
+			<if test="positionDesc != null and positionDesc != '' " > 
+				and position_desc = #{positionDesc}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''  " > 
+				and mobile_phone = #{mobilePhone}
+			</if>
+			<if test="officeTelephone != null and officeTelephone != '' " > 
+				and office_telephone = #{officeTelephone}
+			</if>
+			<if test="homeTelephone != null and homeTelephone != '' " > 
+				and home_telephone = #{homeTelephone}
+			</if>
+			<if test="email != null and email != '' " > 
+				and email = #{email}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+			
+			<if test="updateTimeMin != null and updateTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(update_time) >= unix_timestamp(#{updateTimeMin})]]>
+			</if>
+			<if test="updateTimeMax != null and updateTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(update_time) <= unix_timestamp(#{updateTimeMax})]]>
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 根据用户名账户和密码查询用户 -->
+	<select id="queryUserByLoginNameAndPassword" parameterType="com.stock.security.user.model.UserCondition" resultMap="UserView" >
+		select 
+			id,
+			login_name, 
+			password, 
+			user_type, 
+			employee_number, 
+			nickname, 
+			true_name, 
+			sex, 
+			birthday, 
+			dept_id, 
+			POSITION, 
+			position_desc, 
+			mobile_phone, 
+			office_telephone, 
+			home_telephone, 
+			email, 
+			head_img_url, 
+			remarks, 
+			status, 
+			create_time, 
+			create_user, 
+			update_time, 
+			update_user
+		from 
+			t_user
+		where
+			status = 1 <!-- 启用状态 -->
+			and login_name =  #{loginName}
+			and password =  #{password}
+	</select>
+	
+	<!-- 校验账户是否重复（包括删除和停用状态） -->
+	<select id="checkRepeatLoginName" parameterType="com.stock.security.user.model.UserCondition" resultType="int" >
+		SELECT 
+			COUNT(id) id 
+		FROM 
+			t_user  
+		WHERE  
+			login_name = #{LoginName} 
+		<if test="id != null and id>0">
+			AND id != #{id}
+		</if>
+	</select>
+
+
+
+
+</mapper>
