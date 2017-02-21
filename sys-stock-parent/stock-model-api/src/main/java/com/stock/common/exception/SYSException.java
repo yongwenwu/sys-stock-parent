@@ -1,4 +1,4 @@
-package com.stock.core.exception;
+package com.stock.common.exception;
 /**
  * 
  * @ClassName:  SYSException   

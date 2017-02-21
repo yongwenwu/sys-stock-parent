@@ -15,7 +15,7 @@ CREATE TABLE `t_user` (
   `office_telephone` varchar(50) DEFAULT NULL COMMENT '办公室电话',
   `home_telephone` varchar(50) DEFAULT NULL COMMENT '家庭电话',
   `email` varchar(50) DEFAULT NULL COMMENT '电子邮件',
-  `head_img_url` varchar(255) DEFAULT NULL,
+  `head_img_url` varchar(255) DEFAULT NULL COMMENT '头像图片路径',
   `remarks` varchar(100) DEFAULT NULL COMMENT '备注',
   `status` int(1) DEFAULT NULL COMMENT '状态；1-启用；2-停用；3-删除',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
