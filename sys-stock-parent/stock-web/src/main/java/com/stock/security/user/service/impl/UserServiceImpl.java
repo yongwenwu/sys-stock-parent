@@ -1,4 +1,4 @@
-package com.stock.security.service.impl;
+package com.stock.security.user.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stock.common.exception.SYSException;
-import com.stock.security.dao.UserDao;
+import com.stock.security.user.dao.UserDao;
 import com.stock.security.user.model.User;
 import com.stock.security.user.model.UserCondition;
 import com.stock.security.user.model.UserView;

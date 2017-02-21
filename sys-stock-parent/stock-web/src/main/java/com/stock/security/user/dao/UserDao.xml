@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.stock.security.dao.UserDao">
+<mapper namespace="com.stock.security.user.dao.UserDao">
 	<resultMap id="UserView" type="com.stock.security.user.model.UserView" >
 		 <id property="id" column="id" />
 		<result property="loginName" column="login_Name" />

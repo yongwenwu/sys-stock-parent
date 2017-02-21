@@ -1,4 +1,4 @@
-package com.stock.security.dao;
+package com.stock.security.user.dao;
 
 import java.util.List;
 
