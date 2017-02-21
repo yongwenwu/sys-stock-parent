@@ -37,10 +37,10 @@
 		<selectKey keyProperty="id" resultType="Long" order="AFTER">
 			<![CDATA[SELECT LAST_INSERT_ID() as id ]]>
 		</selectKey>
-		INSERT INTO t_user
+		INSERT INTO db_auth.t_user
 		(
 			login_name, 
-			PASSWORD, 
+			password, 
 			user_type, 
 			employee_number, 
 			nickname, 
@@ -48,7 +48,7 @@
 			sex, 
 			birthday, 
 			dept_id, 
-			POSITION, 
+			position, 
 			position_desc, 
 			mobile_phone, 
 			office_telephone, 
@@ -79,6 +79,7 @@
 			#{officeTelephone},
 			#{homeTelephone},
 			#{email},
+			#{headImgUrl},
 			#{remarks},
 			#{status},
 			#{createTime},
@@ -90,7 +91,7 @@
 	
 	<!-- 根据id更新数据 -->
 	<update id="updateUserById" parameterType="com.stock.security.user.model.User" >
-		UPDATE t_user 
+		UPDATE db_auth.t_user 
 			<set>
 				<if test="loginName != null" > login_name = #{loginName}, </if>
 				<if test="password != null" > password = #{password}, </if>
@@ -146,7 +147,7 @@
 			update_user
 
 		from 
-			t_user
+			db_auth.t_user
 		<where>
 			delete_status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
@@ -233,7 +234,7 @@
 		select 
 			count(1) 
 		from 
-			t_User
+			db_auth.t_user
 		
 		<where>
 			delete_status != 3 <!-- 非删除状态 -->
@@ -333,7 +334,7 @@
 			update_user
 
 		from 
-			t_user
+			db_auth.t_user
 		<where>
 			delete_status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
@@ -408,7 +409,7 @@
 		select 
 			count(1) 
 		from 
-			t_User
+			db_auth.t_user
 		
 		<where>
 			delete_status != 3 <!-- 非删除状态 -->
@@ -507,7 +508,7 @@
 			update_time, 
 			update_user
 		from 
-			t_user
+			db_auth.t_user
 		where
 			status = 1 <!-- 启用状态 -->
 			and login_name =  #{loginName}
@@ -519,7 +520,7 @@
 		SELECT 
 			COUNT(id) id 
 		FROM 
-			t_user  
+			db_auth.t_user  
 		WHERE  
 			login_name = #{LoginName} 
 		<if test="id != null and id>0">
