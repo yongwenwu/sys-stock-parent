@@ -3,12 +3,10 @@ package com.stock.security.user.controller;
 import java.util.Date;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.stock.common.SpringTest;
 import com.stock.security.user.model.User;
 import com.stock.security.user.service.UserService;
 
@@ -20,12 +18,7 @@ import com.stock.security.user.service.UserService;
  * @date: 2017年2月22日 上午12:22:51
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-base.xml",
-		"classpath:applicationContext-database-ref.xml",
-		"classpath:applicationContext-database.xml"
-		})
-public class UserControlerTest {
+public class UserControlerTest extends SpringTest {
 	@Autowired
 	ApplicationContext ctx;
 
@@ -59,8 +52,8 @@ public class UserControlerTest {
 			user.setUserType(1);
 			
 			
-			service.insertUser(user);
-			System.out.println(2222);
+			long id = service.insertUser(user);
+			System.out.println("id：" + id);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
