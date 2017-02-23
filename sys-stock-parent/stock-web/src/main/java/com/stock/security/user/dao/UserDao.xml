@@ -105,7 +105,7 @@
 				<if test="position != null" > position = #{position}, </if>
 				<if test="positionDesc != null" > position_desc = #{positionDesc}, </if>
 				<if test="mobilePhone != null" > mobile_phone = #{mobilePhone}, </if>
-				<if test="officeTelephone != null" > office_telephone = #{officePhone}, </if>
+				<if test="officeTelephone != null" > office_telephone = #{officeTelephone}, </if>
 				<if test="homeTelephone != null" > home_telephone  = #{homeTelephone}, </if>
 				<if test="email != null" > email = #{email}, </if>
 				<if test="remarks != null" > remarks = #{remarks}, </if>
@@ -149,7 +149,7 @@
 		from 
 			db_auth.t_user
 		<where>
-			delete_status != 3 <!-- 非删除状态 -->
+			status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
 				and id = #{id}
 			</if>
@@ -237,7 +237,7 @@
 			db_auth.t_user
 		
 		<where>
-			delete_status != 3 <!-- 非删除状态 -->
+			status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
 				and id = #{id}
 			</if>
@@ -336,7 +336,7 @@
 		from 
 			db_auth.t_user
 		<where>
-			delete_status != 3 <!-- 非删除状态 -->
+			status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
 				and id = #{id}
 			</if>
@@ -412,7 +412,7 @@
 			db_auth.t_user
 		
 		<where>
-			delete_status != 3 <!-- 非删除状态 -->
+			status != 3 <!-- 非删除状态 -->
 			<if test="id != null " > 
 				and id = #{id}
 			</if>

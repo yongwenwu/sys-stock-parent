@@ -2074,7 +2074,7 @@ public class SystemUtil{
 	 * @param dateStr
 	 * @return
 	 */
-	private static String wrapDateField(String fieldName, String dbms) throws SQLException {
+	public static String wrapDateField(String fieldName, String dbms) throws SQLException {
 		if (dbms.equals("sqlserver")) {
 			return "CONVERT(varchar, " + fieldName + ", 20)";
 		} else if (dbms.equals("mysql")) {

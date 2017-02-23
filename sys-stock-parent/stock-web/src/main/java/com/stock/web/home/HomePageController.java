@@ -113,7 +113,7 @@ public class HomePageController {
 		JsonResult json = new JsonResult();
 		 int loginStatus = 1;//1-成功；2-账户不能为空；3-密码不能为空；4-用户名或密码错误
 		String userId = SystemUtil.null2Empty(request.getParameter("userId"));
-		String password = SystemUtil.null2Empty(request.getParameter("password"));
+//		String password = SystemUtil.null2Empty(request.getParameter("password"));
 
 		if (StringUtils.isBlank(userId.trim())) {
 			json.setMsg("用户名不能为空");

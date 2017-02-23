@@ -25,17 +25,26 @@ public class UserControler {
 	@Autowired
 	private UserService userService;
 	
+	
+	/**
+	 * 新建用户信息
+	 * @Title: addUser
+	 * @Description: 
+	 * @param modelAndView
+	 * @param user
+	 * @return
+	 * @author: wyw
+	 * @date: 2017年2月23日 下午11:03:57
+	 */
 	public ModelAndView addUser(ModelAndView modelAndView,User user){
 		modelAndView.setViewName("/");
 		try {
-			
 			userService.insertUser(user);
 			
 		} catch (Exception e) {
 			logger.error("创建用户异常！" + e.getMessage());
 			e.printStackTrace();
 		}
-		
 		return modelAndView;
 	}
 	

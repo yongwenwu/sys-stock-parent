@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.stock.security.dept.dao.DepartmentDao">
+	<resultMap id="DepartmentView" type="com.stock.security.dept.model.DepartmentView" >
+		 <id property="id" column="id" />
+		<result property="deptName" column="dept_name" />
+		<result property="deptNo" column="dept_no" />
+		<result property="parentId" column="parent_id" />
+		<result property="parentIdFull" column="parent_id_full" />
+		<result property="remarks" column="remarks" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="createUser" column="create_user" />
+	</resultMap>
+
+
+
+	<!-- 新建信息 -->
+	<insert id="insertDept" useGeneratedKeys="true" keyProperty="id" parameterType="com.stock.security.dept.model.Department">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			<![CDATA[SELECT LAST_INSERT_ID() as id ]]>
+		</selectKey>
+		INSERT INTO db_auth.t_department
+		(
+		dept_name,
+		dept_no,
+		parent_id,
+		parent_id_full,
+		remarks,
+		status,
+		create_time,
+		create_user
+		)
+		VALUES
+		(
+		#{deptName},
+		#{deptNo},
+		#{parentId},
+		#{parentIdFull},
+		#{remarks},
+		#{status},
+		#{createTime},
+		#{createUser}
+		)
+	</insert>
+	
+	<!-- 根据id更新数据 -->
+	<update id="updateDeptById" parameterType="com.stock.security.dept.model.Department" >
+		UPDATE db_auth.t_department 
+			<set>
+				<if test="deptName != null" > dept_name = #{deptName}, </if>
+				<if test="deptNo != null" > dept_no = #{deptNo}, </if>
+				<if test="parentId != null" > parent_id = #{parentId}, </if>
+				<if test="parentIdFull != null" > parent_id_full = #{parentIdFull}, </if>
+				<if test="remarks != null" > remarks = #{remarks}, </if>
+				<if test="status != null" > status = #{status}, </if>
+				<if test="createTime != null" > create_time = #{createTime}, </if>
+				<if test="createUser != null" > create_user = #{createUser}, </if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	
+	
+	
+	<!-- 分页查询结果 -->
+	<select id="queryDeptPageByCondition" parameterType="com.stock.security.dept.model.DepartmentCondition" resultMap="DepartmentView" >
+		select 
+			id,
+			dept_name,
+			dept_no,
+			parent_id,
+			parent_id_full,
+			remarks,
+			status,
+			create_time,
+			create_user 
+		from 
+			db_auth.t_department
+		
+		<where>
+			status != 3
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="deptName != null and deptName !='' " > 
+				<![CDATA[and dept_name like CONCAT(CONCAT('%', #{deptName}),'%')]]>
+			</if>
+			<if test="deptNo != null " > 
+				and dept_no = #{deptNo}
+			</if>
+			<if test="parentId != null " > 
+				and parent_id = #{parentId}
+			</if>
+			<if test="parentIdFull != null " > 
+				and parent_id_full = #{parentIdFull}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+		</where>
+		<if test="dataGridModel != null">
+			<if test="dataGridModel.sort != null and dataGridModel.sort !=''">
+				order by ${dataGridModel.sort}
+				<if test="dataGridModel.order != null and dataGridModel.order !=''">
+					${dataGridModel.order}
+				</if>
+			</if>
+			
+			<if test="dataGridModel.offset != null and dataGridModel.offset >=0 and dataGridModel.limit != null and dataGridModel.limit >= 0">
+				limit #{dataGridModel.offset}, #{dataGridModel.limit}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 分页查询总数 -->
+	<select id="queryDeptPageCountByCondition" parameterType="com.stock.security.dept.model.DepartmentCondition" resultType="long" >
+		select 
+			count(1) 
+		from 
+			db_auth.t_department
+		
+		<where>
+			status != 3
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="deptName != null and deptName !='' " > 
+				<![CDATA[and dept_name like CONCAT(CONCAT('%', #{deptName}),'%')]]>
+			</if>
+			<if test="deptNo != null " > 
+				and dept_no = #{deptNo}
+			</if>
+			<if test="parentId != null " > 
+				and parent_id = #{parentId}
+			</if>
+			<if test="parentIdFull != null " > 
+				and parent_id_full = #{parentIdFull}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+		</where>
+		
+	</select>
+	
+	
+	<!-- 据条件查询结果 -->
+	<select id="queryDeptListByCondition" parameterType="com.stock.security.dept.model.DepartmentCondition" resultMap="DepartmentView" >
+		select 
+			id,
+			dept_name,
+			dept_no,
+			parent_id,
+			parent_id_full,
+			remarks,
+			status,
+			create_time,
+			create_user 
+		from 
+			db_auth.t_department
+		
+		<where>
+			status != 3
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="deptName != null and deptName !='' " > 
+				<![CDATA[and dept_name like CONCAT(CONCAT('%', #{deptName}),'%')]]>
+			</if>
+			<if test="deptNo != null " > 
+				and dept_no = #{deptNo}
+			</if>
+			<if test="parentId != null " > 
+				and parent_id = #{parentId}
+			</if>
+			<if test="parentIdFull != null " > 
+				and parent_id_full = #{parentIdFull}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据条件查询总数 -->
+	<select id="queryDeptCountByCondition" parameterType="com.stock.security.dept.model.DepartmentCondition" resultType="long" >
+		select 
+			count(1) 
+		from 
+			db_auth.t_department
+		
+		<where>
+			status != 3
+			<if test="id != null " > 
+				and id = #{id}
+			</if>
+			<if test="deptName != null and deptName !='' " > 
+				<![CDATA[and dept_name like CONCAT(CONCAT('%', #{deptName}),'%')]]>
+			</if>
+			<if test="deptNo != null " > 
+				and dept_no = #{deptNo}
+			</if>
+			<if test="parentId != null " > 
+				and parent_id = #{parentId}
+			</if>
+			<if test="parentIdFull != null " > 
+				and parent_id_full = #{parentIdFull}
+			</if>
+			<if test="remarks != null and remarks !='' " > 
+				<![CDATA[and remarks like CONCAT(CONCAT('%', #{remarks}),'%')]]>
+			</if>
+			<if test="status != null  " > 
+				and status = #{status}
+			</if>
+			<if test="createTimeMin != null and createTimeMin !='' " > 
+				<![CDATA[and unix_timestamp(create_time) >= unix_timestamp(#{createTimeMin})]]>
+			</if>
+			<if test="createTimeMax != null and createTimeMax !='' " > 
+				<![CDATA[and unix_timestamp(create_time) <= unix_timestamp(#{createTimeMax})]]>
+			</if>
+		</where>
+	</select>
+	
+
+
+
+
+</mapper>
