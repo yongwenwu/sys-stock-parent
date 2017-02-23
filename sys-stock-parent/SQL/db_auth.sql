@@ -36,6 +36,7 @@ CREATE TABLE `t_department` (
   `remarks` varchar(500) DEFAULT NULL COMMENT '备注',
   `status` int(2) DEFAULT NULL COMMENT '状态；1-启用；2-停用；3-删除',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_user` datetime DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='部门表';
 
